@@ -4,4 +4,5 @@
 <form method="post" class="stack-form">{% csrf_token %}{% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
 {% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<small class="error-text">{{ field.errors|join:', ' }}</small>{% endif %}</div>{% endfor %}
 <input type="hidden" name="next" value="{{ next }}"><button class="button button-full" type="submit">Entrar</button></form>
-<p class="auth-switch">Ainda não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p></section>{% endblock %}
+<p class="auth-switch">Ainda não tem uma conta? <a href="#">Cadastre-se</a></p></section>{% endblock %}
+<!-- criar conta desabilitada por botoes de login -->

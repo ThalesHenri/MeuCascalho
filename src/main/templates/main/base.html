@@ -24,7 +24,8 @@
       </nav>
       <div class="user-menu"><span class="user-greeting">Olá, {{ user.username }}</span><button id="theme-toggle" class="link-button" aria-label="Alternar tema" title="Alternar para tema escuro">🌙</button><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-button" type="submit">Sair</button></form></div>
     {% else %}
-      <nav class="nav-links"><a href="{% url 'login' %}">Entrar</a><a class="button button-small" href="{% url 'register' %}">Criar conta</a></nav>
+      <nav class="nav-links"><a href="{% url 'login' %}">Entrar</a><a class="button button-small" href="#">Criar conta</a></nav> 
+      <!-- desabilitei criar a conta por hora -->
     {% endif %}
   </header>
   <main class="page-shell">
