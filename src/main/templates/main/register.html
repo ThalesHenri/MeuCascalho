@@ -1,0 +1,5 @@
+{% extends 'main/base.html' %}
+{% block title %}Criar conta · Meu Cascalho{% endblock %}
+{% block content %}<section class="auth-card"><p class="eyebrow">COMECE AGORA</p><h1>Crie sua conta</h1><p class="muted">Um lugar simples para cuidar do seu dinheiro.</p>
+<form method="post" class="stack-form">{% csrf_token %}{% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="help-text">{{ field.help_text|safe }}</small>{% endif %}{% if field.errors %}<small class="error-text">{{ field.errors|join:', ' }}</small>{% endif %}</div>{% endfor %}
+<button class="button button-full" type="submit">Criar minha conta</button></form><p class="auth-switch">Já tem uma conta? <a href="{% url 'login' %}">Entrar</a></p></section>{% endblock %}

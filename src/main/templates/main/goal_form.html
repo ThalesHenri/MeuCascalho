@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% load l10n %}
+{% block title %}{% if object %}Editar meta{% else %}Nova meta{% endif %} · Meu Cascalho{% endblock %}
+{% block content %}
+<section class="form-page"><a class="back-link" href="{% url 'goal-list' %}">← Voltar para minhas metas</a><div class="form-card"><p class="eyebrow">SEU PRÓXIMO OBJETIVO</p><h1>{% if object %}Editar meta{% else %}Criar uma meta{% endif %}</h1><p class="muted">Defina quanto quer juntar e acompanhe seu progresso.</p>
+<form method="post" class="stack-form">{% csrf_token %}{% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}{% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}{% if field.errors %}<small class="error-text">{{ field.errors|join:', ' }}</small>{% endif %}</div>{% endfor %}<div class="form-actions"><a class="button button-quiet" href="{% url 'goal-list' %}">Cancelar</a><button class="button" type="submit">{% if object %}Salvar alterações{% else %}Criar meta{% endif %}</button></div></form>
+<p class="form-hint">O valor guardado pode ser atualizado sempre que você poupar mais.</p></div></section>
+{% endblock %}

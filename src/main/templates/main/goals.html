@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+{% load l10n %}
+{% block title %}Minhas metas · Meu Cascalho{% endblock %}
+{% block content %}
+<section class="welcome-row">
+  <div><p class="eyebrow">PLANOS QUE VIRAM CONQUISTAS</p><h1>Minhas metas</h1><p class="muted">Acompanhe quanto falta para realizar cada objetivo.</p></div>
+  <a class="button" href="{% url 'goal-create' %}"><span aria-hidden="true">＋</span> Nova meta</a>
+</section>
+{% if goals %}
+<section class="goal-grid">
+  {% for goal in goals %}
+  <article class="goal-card">
+    <div class="goal-card-top"><div><p class="eyebrow">{% if goal.is_completed %}CONCLUÍDA{% else %}EM ANDAMENTO{% endif %}</p><h2>{{ goal.name }}</h2></div><span class="goal-badge">{% if goal.is_completed %}✓{% else %}{{ goal.progress_percentage }}%{% endif %}</span></div>
+    {% if goal.note %}<p class="goal-note">{{ goal.note }}</p>{% endif %}
+    <div class="goal-amounts"><strong>R$ {{ goal.current_amount|floatformat:2|localize }}</strong><span>de R$ {{ goal.target_amount|floatformat:2|localize }}</span></div>
+    <div class="progress-track" role="progressbar" aria-label="Progresso de {{ goal.name }}" aria-valuenow="{{ goal.progress_percentage }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill {% if goal.is_completed %}progress-complete{% endif %}" style="width: {{ goal.progress_percentage }}%"></div></div>
+    <div class="goal-meta"><span>{% if goal.is_completed %}Meta alcançada!{% elif goal.target_date %}Prazo: {{ goal.target_date|date:'d/m/Y' }}{% else %}Sem prazo definido{% endif %}</span><span>Faltam R$ {{ goal.amount_remaining|floatformat:2|localize }}</span></div>
+    <div class="goal-actions"><a href="{% url 'entry-create' %}?goal={{ goal.pk }}">Novo aporte/retirada</a><a href="{% url 'goal-update' goal.pk %}">Editar meta</a><a href="{% url 'goal-delete' goal.pk %}">Excluir</a></div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section class="content-card"><div class="empty-state"><span class="empty-icon">✦</span><h3>Qual é o seu próximo objetivo?</h3><p>Crie uma meta e acompanhe o quanto já conseguiu guardar.</p><a class="button button-outline" href="{% url 'goal-create' %}">Criar minha primeira meta</a></div></section>
+{% endif %}
+{% endblock %}

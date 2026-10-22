@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Organize suas receitas e despesas com o Meu Cascalho.">
+  <title>{% block title %}Meu Cascalho{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'main/css/dashboard.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'dashboard' %}"><span class="brand-mark">$</span><span>meu<span class="brand-light">cascalho</span></span></a>
+    {% if user.is_authenticated %}
+      <nav class="nav-links" aria-label="Navegação principal">
+        <a href="{% url 'dashboard' %}">Visão geral</a>
+        <a href="{% url 'entry-create' %}">Novo lançamento</a>
+        <a href="{% url 'category-create' %}">Categorias</a>
+        <a href="{% url 'goal-list' %}">Metas</a>
+      </nav>
+      <div class="user-menu"><span class="user-greeting">Olá, {{ user.username }}</span><button id="theme-toggle" class="link-button" aria-label="Alternar tema" title="Alternar para tema escuro">🌙</button><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-button" type="submit">Sair</button></form></div>
+    {% else %}
+      <nav class="nav-links"><a href="{% url 'login' %}">Entrar</a><a class="button button-small" href="{% url 'register' %}">Criar conta</a></nav>
+    {% endif %}
+  </header>
+  <main class="page-shell">
+    {% if messages %}<div class="messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">Meu Cascalho <span>·</span> Seu dinheiro, mais claro.</footer>
+  <script src="{% static 'main/js/theme.js' %}"></script>
+</body>
+</html>

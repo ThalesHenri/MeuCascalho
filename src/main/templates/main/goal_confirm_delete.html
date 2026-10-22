@@ -1,0 +1,3 @@
+{% extends 'main/base.html' %}
+{% block title %}Excluir meta · Meu Cascalho{% endblock %}
+{% block content %}<section class="auth-card"><p class="eyebrow">CONFIRMAÇÃO</p><h1>Excluir esta meta?</h1><p class="muted">“{{ object.name }}” e seu progresso serão removidos permanentemente.</p><form method="post" class="form-actions">{% csrf_token %}<a class="button button-quiet" href="{% url 'goal-list' %}">Cancelar</a><button class="button button-danger" type="submit">Excluir meta</button></form></section>{% endblock %}
