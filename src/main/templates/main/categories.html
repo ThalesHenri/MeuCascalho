@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+{% block title %}Categorias · Meu Cascalho{% endblock %}
+{% block content %}
+<section class="welcome-row">
+  <div><p class="eyebrow">PERSONALIZE</p><h1>Minhas categorias</h1><p class="muted">Organize receitas e despesas com categorias próprias.</p></div>
+  <a class="button" href="{% url 'category-create' %}"><span aria-hidden="true">＋</span> Nova categoria</a>
+</section>
+{% if categories %}
+<section class="category-list" aria-label="Categorias cadastradas">
+  {% for category in categories %}
+  <article class="category-card">
+    <div class="category-card-info"><span class="pill {% if category.kind == 'income' %}pill-income{% else %}pill-expense{% endif %}">{{ category.get_kind_display }}</span><h2>{{ category.name }}</h2></div>
+    <div class="category-card-actions"><a href="{% url 'category-update' category.pk %}">Editar</a><a class="category-delete-link" href="{% url 'category-delete' category.pk %}">Excluir</a></div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section class="content-card"><div class="empty-state"><span class="empty-icon">✦</span><h3>Você ainda não tem categorias</h3><p>Crie uma categoria para deixar seus lançamentos mais organizados.</p><a class="button button-outline" href="{% url 'category-create' %}">Criar primeira categoria</a></div></section>
+{% endif %}
+{% endblock %}

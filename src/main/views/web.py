@@ -240,7 +240,7 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     template_name = 'main/category_form.html'
-    success_url = reverse_lazy('dashboard')
+    success_url = reverse_lazy('category-list')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -250,6 +250,39 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+    template_name = 'main/categories.html'
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
+
+
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'main/category_form.html'
+    success_url = reverse_lazy('category-list')
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['owner'] = self.request.user
+        return kwargs
+
+
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = Category
+    template_name = 'main/category_confirm_delete.html'
+    success_url = reverse_lazy('category-list')
+
+    def get_queryset(self):
+        return Category.objects.filter(owner=self.request.user)
 
 
 class GoalListView(LoginRequiredMixin, ListView):

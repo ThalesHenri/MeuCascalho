@@ -127,6 +127,63 @@ class FinanceWebTests(TestCase):
         self.assertTrue(User.objects.filter(username='novo').exists())
 
 
+class CategoryWebTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='category-user', password='strong-pass-123')
+        self.other = User.objects.create_user(username='other-category-user', password='strong-pass-123')
+        self.client.login(username='category-user', password='strong-pass-123')
+
+    def test_category_list_shows_only_current_users_categories(self):
+        Category.objects.create(owner=self.user, name='Moradia', kind=Category.Kind.EXPENSE)
+        Category.objects.create(owner=self.other, name='Privada', kind=Category.Kind.INCOME)
+
+        response = self.client.get(reverse('category-list'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Moradia')
+        self.assertNotContains(response, 'Privada')
+        self.assertContains(response, reverse('category-create'))
+
+    def test_category_can_be_created_and_edited(self):
+        response = self.client.post(reverse('category-create'), {
+            'name': 'Mercado', 'kind': Category.Kind.EXPENSE,
+        })
+        self.assertRedirects(response, reverse('category-list'))
+        category = Category.objects.get(owner=self.user, name='Mercado')
+
+        response = self.client.post(reverse('category-update', args=[category.pk]), {
+            'name': 'Alimentação', 'kind': Category.Kind.EXPENSE,
+        })
+
+        self.assertRedirects(response, reverse('category-list'))
+        category.refresh_from_db()
+        self.assertEqual(category.name, 'Alimentação')
+
+    def test_category_update_and_delete_are_scoped_to_user(self):
+        category = Category.objects.create(
+            owner=self.other, name='Categoria privada', kind=Category.Kind.EXPENSE,
+        )
+
+        self.assertEqual(self.client.get(reverse('category-update', args=[category.pk])).status_code, 404)
+        self.assertEqual(self.client.get(reverse('category-delete', args=[category.pk])).status_code, 404)
+
+    def test_deleting_category_keeps_entries_without_category(self):
+        category = Category.objects.create(
+            owner=self.user, name='Temporária', kind=Category.Kind.EXPENSE,
+        )
+        entry = Entry.objects.create(
+            owner=self.user, category=category, kind=Entry.Kind.EXPENSE,
+            description='Compra', amount=Decimal('25.00'), occurred_on=date.today(),
+        )
+
+        response = self.client.post(reverse('category-delete', args=[category.pk]))
+
+        self.assertRedirects(response, reverse('category-list'))
+        self.assertFalse(Category.objects.filter(pk=category.pk).exists())
+        entry.refresh_from_db()
+        self.assertIsNone(entry.category)
+
+
 class FinanceApiTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='api-user', password='strong-pass-123')

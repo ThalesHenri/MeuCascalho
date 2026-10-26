@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+{% block title %}Excluir categoria · Meu Cascalho{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <p class="eyebrow">CONFIRMAÇÃO</p>
+  <h1>Excluir esta categoria?</h1>
+  <p class="muted">“{{ object.name }}” será removida. Os lançamentos associados serão mantidos, mas ficarão sem categoria.</p>
+  <form method="post" class="form-actions">{% csrf_token %}<a class="button button-quiet" href="{% url 'category-list' %}">Cancelar</a><button class="button button-danger" type="submit">Excluir categoria</button></form>
+</section>
+{% endblock %}

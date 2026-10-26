@@ -19,7 +19,7 @@
       <nav class="nav-links" aria-label="Navegação principal">
         <a href="{% url 'dashboard' %}">Visão geral</a>
         <a href="{% url 'entry-create' %}">Novo lançamento</a>
-        <a href="{% url 'category-create' %}">Categorias</a>
+        <a href="{% url 'category-list' %}">Categorias</a>
         <a href="{% url 'goal-list' %}">Metas</a>
       </nav>
       <div class="user-menu"><span class="user-greeting">Olá, {{ user.username }}</span><button id="theme-toggle" class="link-button" aria-label="Alternar tema" title="Alternar para tema escuro">🌙</button><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-button" type="submit">Sair</button></form></div>
