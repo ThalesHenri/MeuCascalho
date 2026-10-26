@@ -48,7 +48,7 @@ class Entry(models.Model):
     class Meta:
         ordering = ['-occurred_on', '-created_at']
         constraints = [
-            models.CheckConstraint(condition=Q(amount__gt=0), name='entry_amount_must_be_positive'),
+            models.CheckConstraint(check=Q(amount__gt=0), name='entry_amount_must_be_positive'),
         ]
         indexes = [models.Index(fields=['owner', 'occurred_on'], name='entry_owner_date_idx')]
         verbose_name = 'lançamento'

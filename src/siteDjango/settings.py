@@ -18,8 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Keep a development fallback; configure DJANGO_SECRET_KEY in production.
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-change-me')
-DEBUG = True
-ALLOWED_HOSTS = ['*']  # Allow all hosts for development; configure in production.
+DEBUG = False
+ALLOWED_HOSTS = ['meucascalhoapp.com.br']  # Allow all hosts for development; configure in production.
 
 
 # Application definition

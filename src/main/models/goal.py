@@ -25,8 +25,8 @@ class Goal(models.Model):
     class Meta:
         ordering = ['target_date', 'name']
         constraints = [
-            models.CheckConstraint(condition=Q(target_amount__gt=0), name='goal_target_must_be_positive'),
-            models.CheckConstraint(condition=Q(current_amount__gte=0), name='goal_current_must_be_nonnegative'),
+            models.CheckConstraint(check=Q(target_amount__gt=0), name='goal_target_must_be_positive'),
+            models.CheckConstraint(check=Q(current_amount__gte=0), name='goal_current_must_be_nonnegative'),
         ]
         verbose_name = 'meta financeira'
         verbose_name_plural = 'metas financeiras'
